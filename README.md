@@ -53,11 +53,11 @@ O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na b
 
 #### Capacidade de Discriminação e Drivers de Risco
 
-<img src="./images/roc_curve.png" width="48%">
+<img src="./images/roc_curve.png" width="100%">
 
-<img src="./images/feature_importance.png" width="48%">
+<img src="./images/feature_importance.png" width="100%">
 
-<img src="./images/confusion_matrix.png" width="60%">
+<img src="./images/confusion_matrix.png" width="100%">
 
 
 **Insight de Negócio:** O gráfico de *Feature Importance* (direita) valida a hipótese econômica: a variável criada **`DAYS_EMPLOYED_PERCENT`** (Estabilidade) provou-se um dos maiores preditores de adimplência, superando variáveis brutas de renda.
