@@ -115,9 +115,9 @@ model.fit(X_train, y_train)
 
 **Valvitor Santos**
 
-  * 💼 [LinkedIn](https://www.google.com/search?q=https://www.linkedin.com/in/valvitor-santos/)
-  * 📧 [Email](mailto:valvitorscf@gmail.com)
-  * 🐱 [GitHub](https://www.google.com/search?q=https://github.com/Valvitor)
+  * 💼 [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
+  * 📧 [Email](valvitorscf@gmail.com)
+  * 🐱 [GitHub](https://github.com/Valvitor)
 
 -----
 
