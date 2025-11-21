@@ -69,6 +69,6 @@ O modelo foi avaliado na base de teste (30% dos dados, não vistos no treino):
 ---
 
 ## 📞 Contato
-* **Seu Nome**
-* [LinkedIn](https://www.linkedin.com/in/seu-linkedin)
-* [E-mail](mailto:seuemail@exemplo.com)
+* **Valvitor Santos**
+* [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
+* [E-mail](valvitorscf@gmail.com)
