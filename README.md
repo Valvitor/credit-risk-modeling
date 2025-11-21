@@ -30,14 +30,14 @@ O modelo final, um **Random Forest Classifier** com balanceamento de classes, fo
 
 ### 1. Curva ROC
 A curva demonstra que o modelo é superior a uma escolha aleatória (linha pontilhada).
-![Curva ROC](./outputs/roc_curve.png)
+![Curva ROC](./notebooks/outputs/roc_curve.png)
 
 ### 2. Importância das Variáveis (Feature Importance)
 O que define um cliente de risco? Segundo o modelo, dados externos (Bureau de crédito) e a idade são cruciais.
 ![Feature Importance](./outputs/feature_importance.png)
 
 ### 3. Matriz de Confusão
-![Matriz de Confusão](./outputs/confusion_matrix.png)
+![Matriz de Confusão](./notebooks/outputs/feature_importance.png)
 
 ---
 
