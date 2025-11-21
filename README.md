@@ -1,17 +1,3 @@
-O seu README está **excelente**. Você conseguiu equilibrar perfeitamente a visão técnica (Data Science) com a visão de negócio/econômica, o que é um grande diferencial para recrutadores e gestores. A estrutura de "Micro, Macro e Estratégico" conta uma história muito coesa.
-
-Aqui está o passo a passo exato para fazer esse README funcionar no seu GitHub, garantindo que as imagens e fórmulas apareçam corretamente.
-
------
-
-### 🚀 Passo 1: Criar/Atualizar o arquivo
-
-1.  Abra o seu VS Code na pasta do projeto (`/Users/valvitorsantos/Documents/credit-risk-modeling`).
-2.  Na raiz do projeto (fora das pastas `notebooks` ou `data`), crie um arquivo chamado exatamente: **`README.md`**.
-3.  Cole o código abaixo dentro deste arquivo.
-
-> **Atenção:** Copie o bloco abaixo clicando no botão "Copy" no canto superior direito do código para manter a formatação exata.
-
 ````markdown
 # 📊 Credit Risk Ecosystem: Do Micro ao Macro
 
@@ -72,7 +58,7 @@ O modelo (Random Forest balanceado) atingiu um **ROC AUC de 0.72** na base de te
 
 O gráfico abaixo valida a tese do projeto: variáveis construídas com racional econômico superaram dados brutos.
 
-\<img src="./images/feature\_importance.png" width="100%" alt="Gráfico de Importância das Variáveis mostrando Scores Externos como principal fator"/\>
+\<img src="./images/feature_importance.png" width="100%" alt="Gráfico de Importância das Variáveis mostrando Scores Externos como principal fator"/\>
 
   * **Insight:** `DAYS_EMPLOYED_PERCENT` (estabilidade no emprego) e scores externos (`EXT_SOURCE`) foram mais determinantes que a renda absoluta.
 
@@ -80,10 +66,10 @@ O gráfico abaixo valida a tese do projeto: variáveis construídas com racional
 
 A Curva ROC demonstra a capacidade do modelo de separar "Bons" e "Maus" pagadores acima de uma escolha aleatória (linha tracejada). Na Matriz de Confusão, o foco foi equilibrar a detecção de fraudes sem barrar excessivamente bons clientes.
 
-\<p float="left"\>
-\<img src="./images/roc\_curve.png" width="49%" alt="Curva ROC" /\>
-\<img src="./images/confusion\_matrix.png" width="49%" alt="Matriz de Confusão" /\>
-\</p\>
+
+\<img src="./images/roc_curve.png" width="100%" alt="Curva ROC" /\>
+
+\<img src="./images/confusion_matrix.png" width="100%" alt="Matriz de Confusão" /\>
 
 -----
 
@@ -97,6 +83,9 @@ Utilizamos dados do **Banco Central do Brasil (SGS - Série 21082)** de 2011 a 2
 
 1.  **Sazonalidade (S):** Padrões anuais (ex: 13º salário reduzindo inadimplência em Dezembro).
 2.  **Tendência:** Movimentos de longo prazo do ciclo de crédito.
+
+\<img src="./images/sarima.png" width="100%" alt="Matriz de Confusão" /\>
+
 
 ### 🚨 Resultados e Alerta de Risco (Próximos 6 Meses)
 
@@ -130,6 +119,11 @@ Como não temos "rótulos" prévios, utilizamos o algoritmo K-Means.
 2.  **PCA (Principal Component Analysis):** Reduzimos as variáveis em 2 componentes para visualização.
 
 ### 🎯 Resultados dos Clusters
+
+\<img src="./images/KMEANS-1.png" width="100%" alt="Matriz de Confusão" /\>
+
+\<img src="./images/KMEANS-2.png" width="100%" alt="Matriz de Confusão" /\>
+
 
 **1. Escolha do K (Cotovelo):**
 O gráfico abaixo mostra que o ganho de informação diminui após 3 ou 4 clusters.
@@ -174,37 +168,3 @@ pip install -r requirements.txt
 <!-- end list -->
 
 ````
-
----
-
-### ⚠️ Passo 2: Configurar as Imagens (Crucial)
-
-O seu README está programado para buscar imagens na pasta `./images`. Para que o layout fique bonito e não apareçam ícones de "link quebrado", você precisa organizar suas pastas.
-
-1.  Crie uma pasta chamada `images` na raiz do projeto.
-2.  Salve os prints dos seus notebooks (ou faça o upload) para dentro dessa pasta com **exatamente** estes nomes:
-    * `feature_importance.png`
-    * `roc_curve.png`
-    * `confusion_matrix.png`
-    * *(Opcional)* Se tiver imagens para o Forecast e Clusters, adicione as tags no README e coloque os arquivos na pasta também.
-
-*Dica: Se você ainda não tem os PNGs salvos, pode usar a ferramenta de captura de tela do seu computador, tirar print dos gráficos nos notebooks e salvar com esses nomes.*
-
-### 🚀 Passo 3: Subir para o GitHub
-
-No terminal do VS Code, execute:
-
-```bash
-git add README.md
-git add images/  # Para adicionar a pasta de imagens
-git commit -m "Docs: Atualiza README com portfólio completo de risco"
-git push origin main
-````
-
-### Ajustes que fiz no código para você:
-
-1.  **Fórmulas Matemáticas:** O GitHub agora suporta LaTeX nativo (`$$...$$`), então suas fórmulas vão renderizar perfeitamente.
-2.  **Layout de Imagens:** Coloquei a *ROC Curve* e a *Confusion Matrix* lado a lado usando um pouco de HTML (`<p float="left">`), o que deixa o visual muito mais limpo do que uma imagem gigante embaixo da outra.
-3.  **Links:** Corrigi a sintaxe do link do `git clone` para facilitar a cópia pelo usuário.
-
-Quer ajuda para gerar alguma dessas imagens a partir dos seus notebooks antes de subir?
