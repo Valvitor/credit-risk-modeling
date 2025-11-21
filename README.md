@@ -56,14 +56,12 @@ O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na b
 
 <img src="./images/feature_importance.png" width="100%">
 
-<img src="./images/confusion_matrix.png" width="100%">
-
 
 **Insight de Negócio:** O gráfico de *Feature Importance* (direita) valida a hipótese econômica: a variável criada **`DAYS_EMPLOYED_PERCENT`** (Estabilidade) provou-se um dos maiores preditores de adimplência, superando variáveis brutas de renda.
 
 #### Matriz de Confusão (Threshold 0.5)
 
-\<img src="images/confusion_matrix.png" width="60%" /\>
+<img src="./images/confusion_matrix.png" width="100%">
 
 > *Código Fonte:* [`notebooks/1.0-mvp-modelagem-credito.ipynb`](https://www.google.com/search?q=notebooks/1.0-mvp-modelagem-credito.ipynb)
 
