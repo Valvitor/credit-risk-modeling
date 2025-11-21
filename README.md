@@ -119,15 +119,15 @@ Como não temos "rótulos" prévios, utilizamos o algoritmo K-Means.
 
 ### 🎯 Resultados dos Clusters
 
-![K-Means 1](images/KMEANS-1.png)
-
-![K-Means 2](images/KMEANS-2.png)
-
 **1. Escolha do K (Cotovelo):**  
 O gráfico abaixo mostra que o ganho de informação diminui após 3 ou 4 clusters.
 
+![K-Means 1](images/KMEANS-1.png)
+
 **2. Visualização dos Segmentos (PCA):**  
 Os clientes foram separados em grupos distintos (cores). O **Eixo X** explica a maior parte da variância (Gasto vs Limite).
+
+![K-Means 2](images/KMEANS-2.png)
 
 > **Aplicação de Negócio:**
 >
