@@ -16,7 +16,7 @@
 
 | Módulo | Foco | Técnica | Target (Alvo) |
 | :--- | :--- | :--- | :--- |
-| **1. Credit Scoring** | **Risco Individual** | Random Forest (Supervised) | Probabilidade de Default ($P(D)$) |
+| **1. Credit Scoring** | **Risco Individual** | Random Forest (Supervised) | Probabilidade de Default (P(D)) |
 | **2. Forecast Macro** | **Risco Sistêmico** | SARIMA (Time Series) | Taxa de Inadimplência Brasil (BACEN) |
 | **3. Segmentação** | **Estratégia de CRM** | K-Means + PCA (Unsupervised) | Grupos de Comportamento (Clusters) |
 
