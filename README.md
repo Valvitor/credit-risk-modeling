@@ -1,181 +1,130 @@
-# 💰 Credit Scoring: Modelagem de Risco de Crédito
-
-![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge\&logo=python)
-![Scikit-Learn](https://img.shields.io/badge/Scikit_Learn-F7931E?style=for-the-badge\&logo=scikit-learn)
-![Status](https://img.shields.io/badge/Status-MVP_Concluído-success?style=for-the-badge)
-
-> **Objetivo:** Desenvolver um algoritmo de Machine Learning capaz de prever a probabilidade de inadimplência (*default*), reduzindo a exposição ao risco e otimizando a concessão de crédito.
-
----
-
-## 📋 Visão Geral do Negócio
-
-Em instituições financeiras, o maior desafio não é apenas conceder crédito, mas concedê-lo para quem consegue pagar. O problema central é um **problema de classificação desbalanceada**: a maioria dos clientes paga em dia, mas conceder crédito a um mau pagador gera prejuízo direto (Perda do Principal).
-
-Neste projeto, utilizamos dados históricos do **Home Credit** para prever a classe `TARGET`
-*(0: Bom Pagador, 1: Mau Pagador)*.
-
-### 🎯 KPIs e Métricas de Sucesso
-
-A **Acurácia** é inadequada em bases desbalanceadas. Portanto, a métrica principal é:
-
-* **ROC AUC** – Mede a capacidade do modelo de *ordenar* os clientes por risco.
-
----
-
-## 📊 Resultados do Modelo (MVP)
-
-| Métrica     | Resultado     | Interpretação                                  |
-| ----------- | ------------- | ---------------------------------------------- |
-| **ROC AUC** | **0.7151**    | Boa discriminação entre bons e maus pagadores. |
-| **Dataset** | Desbalanceado | Mitigado com `class_weight='balanced'`.        |
-
-### 🔍 Curva ROC
-
-![Curva ROC](./notebooks/outputs/roc_curve.png)
-
-### 🔍 Importância das Variáveis
-
-![Feature Importance](./notebooks/outputs/feature_importance.png)
-
-### 🔍 Matriz de Confusão
-
-![Matriz de Confusão](./notebooks/outputs/confusion_matrix.png)
-
----
-
-## 🧠 Engenharia de Atributos (Feature Engineering)
-
-O projeto utilizou hipóteses econômicas para criar variáveis com significado financeiro.
-
-1. **Comprometimento de Renda (`CREDIT_INCOME_PERCENT`)**
-   $$\frac{\text{Valor do Crédito}}{\text{Renda Anual}}$$
-
-2. **Peso da Parcela (`ANNUITY_INCOME_PERCENT`)**
-   $$\frac{\text{Valor da Parcela}}{\text{Renda Anual}}$$
-
-3. **Estabilidade Profissional (`DAYS_EMPLOYED_PERCENT`)**
-   $$\frac{\text{Dias Empregado}}{\text{Idade}}$$
-
----
-
-## 🛠️ Pipeline Técnico
-
-1. **Coleta** — CSV (Pandas)
-2. **Limpeza** — remoção de colunas irrelevantes + mediana para nulos
-3. **Modelagem** — `RandomForestClassifier` com `class_weight='balanced'`
-4. **Avaliação** — ROC AUC + curva ROC + matriz de confusão
-
-```python
-model = RandomForestClassifier(
-    n_estimators=100,
-    class_weight='balanced',
-    random_state=42,
-    n_jobs=-1
-)
-model.fit(X_train, y_train)
-```
-
----
-
-## 🚀 Como Reproduzir
-
-```bash
-git clone https://github.com/Valvitor/credit-risk-modeling.git
-cd credit-risk-modeling
-pip install -r requirements.txt
-```
-
-Depois, abra o arquivo:
-
-📓 `notebooks/1.0-mvp-modelagem-credito.ipynb`
-
----
-
 # 📊 Credit Risk Ecosystem: Do Micro ao Macro
 
-![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge\&logo=python)
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
 ![Status](https://img.shields.io/badge/Status-Portfólio_Completo-success?style=for-the-badge)
 ![Domain](https://img.shields.io/badge/Domain-Finanças_Quantitativas-red?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-> Repositório com duas abordagens de risco de crédito: **Scoring (Micro)** e **Forecasting (Macro)**.
+> **Business Challenge:** O gerenciamento de risco de crédito exige uma abordagem holística. Este repositório consolida soluções para duas frentes críticas:
+> 1.  **Micro:** Mitigação de Seleção Adversa na concessão individual (**Credit Scoring**).
+> 2.  **Macro:** Calibragem de Risco Sistêmico e Provisões (**Forecasting de Inadimplência**).
 
 ---
 
 ## 📂 Estrutura do Portfólio
 
-| Projeto               | Foco             | Técnica       | Target                   |
-| --------------------- | ---------------- | ------------- | ------------------------ |
-| **1. Credit Scoring** | Micro (Cliente)  | Random Forest | Probabilidade de Default |
-| **2. Macro Forecast** | Macro (Economia) | SARIMA        | Inadimplência Agregada   |
+| Módulo | Foco | Técnica | Target (Alvo) |
+| :--- | :--- | :--- | :--- |
+| **1. Credit Scoring** | **Micro** (Cliente) | Random Forest | Probabilidade de Default Individual |
+| **2. Macro Forecast** | **Macro** (Mercado) | SARIMA | Taxa de Inadimplência do Sistema (Séries Temporais) |
 
----
+### 🌳 Organização de Arquivos
+```text
+credit-risk-modeling/
+├── data/                # Dados brutos (Home Credit & BACEN via API)
+├── images/              # Resultados gráficos e visuais
+├── notebooks/           # Jupyter Notebooks
+│   ├── 1.0-mvp-modelagem-credito.ipynb    # Projeto 1 (Scoring)
+│   └── 2.0-forecast-inadimplencia.ipynb   # Projeto 2 (Séries Temporais)
+├── requirements.txt     # Dependências do projeto
+└── README.md            # Documentação Executiva
+````
+
+-----
 
 # 🏢 Projeto 1: Credit Scoring (Micro)
 
-* **Métrica:** ROC AUC **0.7151**
-* **Insight:** Estabilidade (`DAYS_EMPLOYED_PERCENT`) superou renda como preditor.
+**Objetivo:** Desenvolver um classificador capaz de ordenar proponentes por risco, maximizando o retorno ajustado ao risco (RAROC) e reduzindo a assimetria de informação.
 
-<p float="left">
-  <img src="./notebooks/outputs/roc_curve.png" width="45%" />
-  <img src="./notebooks/outputs/feature_importance.png" width="45%" /> 
-</p>
+### 🧠 Engenharia de Atributos (Economic Feature Engineering)
 
-🔗 Notebook:
-`notebooks/1.0-mvp-modelagem-credito.ipynb`
+Diferencial do projeto: A seleção de features não foi puramente estatística, mas fundamentada em hipóteses econômicas de **Solvência** e **Liquidez**.
 
----
+| Variável Derivada | Fórmula (Proxy) | Hipótese Econômica |
+| :--- | :--- | :--- |
+| **Alavancagem** | $$\text{DTI} \approx \frac{\text{Valor do Crédito}}{\text{Renda Anual}}$$ | Clientes alavancados muito acima de sua geração de caixa anual apresentam risco exponencial de insolvência. |
+| **Esforço Mensal** | $$\text{Liquidez} = \frac{\text{Valor da Parcela}}{\text{Renda Anual}}$$ | Mede a pressão no fluxo de caixa. Parcelas que consomem grande fatia da renda aumentam a sensibilidade a choques exógenos. |
+| **Ciclo de Vida** | $$\text{Estabilidade} = \frac{\text{Tempo Emprego}}{\text{Idade}}$$ | Baseado na *Life-cycle hypothesis*: estabilidade profissional relativa à idade indica menor volatilidade de renda futura. |
+
+### 📈 Resultados (MVP)
+
+O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na base de teste (Holdout 30%).
+
+#### Capacidade de Discriminação e Drivers de Risco
+
+\<p float="left"\>
+\<img src="images/roc_curve.png" width="48%" /\>
+\<img src="images/feature_importance.png" width="48%" /\>
+\</p\>
+
+**Insight de Negócio:** O gráfico de *Feature Importance* (direita) valida a hipótese econômica: a variável criada **`DAYS_EMPLOYED_PERCENT`** (Estabilidade) provou-se um dos maiores preditores de adimplência, superando variáveis brutas de renda.
+
+#### Matriz de Confusão (Threshold 0.5)
+
+\<img src="images/confusion_matrix.png" width="60%" /\>
+
+> *Código Fonte:* [`notebooks/1.0-mvp-modelagem-credito.ipynb`](https://www.google.com/search?q=notebooks/1.0-mvp-modelagem-credito.ipynb)
+
+-----
 
 # 📈 Projeto 2: Forecast de Inadimplência (Macro)
 
-**Objetivo:** Projetar inadimplência de Pessoa Física usando dados do Banco Central (SGS).
+**Objetivo:** Prever a tendência da taxa de inadimplência (Pessoa Física) para calibrar a **Provisão para Devedores Duvidosos (PDD)** e realizar cenários de estresse (Basel III).
 
-### Modelo SARIMA
+### 📊 Dados e Modelagem
 
-Captura:
+  * **Fonte:** Dados oficiais do **Banco Central do Brasil (SGS)** extraídos via API em tempo real (Série 21082).
+  * **Período:** Ciclo de crédito completo (2011 - 2024).
+  * **Modelo:** **SARIMA** (Seasonal AutoRegressive Integrated Moving Average).
+  * **Racional:** O modelo captura explicitamente a tendência de longo prazo e os ciclos sazonais de endividamento das famílias brasileiras (ex: aumento de inadimplência pós-final de ano).
 
-* Tendência
-* Sazonalidade
-* Choques estruturais pós-pandemia
+### 🚨 Resultados e Alerta de Risco
 
-![Forecast Sarima](images/forecast_sarima.png)
+O modelo obteve um erro médio absoluto (**MAPE**) de apenas **6.09%**, excelente para dados macroeconômicos voláteis.
 
-### 📌 Previsão (2025–2026)
+**Cenário Base (Projeção 2025-2026):**
+O modelo aponta uma **tendência clara de alta** na inadimplência, projetando o rompimento do patamar de **4.15%** no início de 2026.
 
-| Mês     | Taxa Prevista |
-| ------- | ------------- |
-| 2025-10 | 3.97%         |
-| 2025-11 | 3.98%         |
-| 2025-12 | 3.91%         |
-| 2026-01 | 4.05% 🔺      |
-| 2026-02 | 4.12% 🔺      |
-| 2026-03 | 4.15% 🔺      |
+  * **Recomendação Estratégica:** A tesouraria deve considerar o fortalecimento do colchão de liquidez (PDD) e revisão de políticas de concessão para faixas de rating de maior risco (D-H) para 2026.
 
-> Tendência de alta → instituições devem reforçar provisão (PDD).
+> *Código Fonte:* [`notebooks/2.0-forecast-inadimplencia.ipynb`](https://www.google.com/search?q=notebooks/2.0-forecast-inadimplencia.ipynb)
 
-🔗 Notebook:
-`notebooks/2.0-forecast-inadimplencia.ipynb`
+-----
 
----
+## 🛠️ Tech Stack & Reproducibilidade
 
-# 🛠️ Tech Stack Geral
+  * **Linguagem:** Python 3.12
+  * **Bibliotecas:** Pandas, NumPy, Scikit-Learn, Statsmodels, Seaborn.
 
-* Python 3.12
-* Pandas, NumPy
-* Scikit-Learn
-* Statsmodels
-* Seaborn
-* Dados: Kaggle + API SGS (BCB)
+### Como rodar o projeto:
 
----
+```bash
+# 1. Clone o repositório
+git clone [https://github.com/Valvitor/credit-risk-modeling.git](https://github.com/Valvitor/credit-risk-modeling.git)
 
-# 📞 Contato
+# 2. Instale as dependências
+pip install -r requirements.txt
 
-**Valvitor Santos**
-Economista & Data Scientist
+# 3. Execute os Notebooks (A ordem não interfere)
+# notebooks/1.0-mvp-modelagem-credito.ipynb
+# notebooks/2.0-forecast-inadimplencia.ipynb
+```
 
-* 💼 [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
-* 📧 [valvitorscf@gmail.com](mailto:valvitorscf@gmail.com)
-* 🐱 [GitHub](https://github.com/Valvitor)
+-----
 
----
+## 🔮 Roadmap (Próximos Passos)
+
+Para evoluir estes MVPs para modelos produtivos de nível bancário:
+
+  * [ ] **Modelagem Avançada:** Testar Gradient Boosting (XGBoost/LightGBM) para o Score de Crédito.
+  * [ ] **Explicabilidade (XAI):** Implementar **SHAP Values** para justificar decisões individuais (Compliance regulatório).
+  * [ ] **Deploy:** Criar uma API com FastAPI para servir o modelo de Score em tempo real.
+
+-----
+
+## 📞 Contato
+
+**Valvitor Santos** - Economista & Data Scientist
+
+  * [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
+  * [E-mail](mailto:valvitorscf@gmail.com)
