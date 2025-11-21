@@ -53,10 +53,9 @@ O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na b
 
 #### Capacidade de Discriminação e Drivers de Risco
 
-<p float="left">
-  <img src="./images/roc_curve.png" width="48%">
-  <img src="./images/feature_importance.png" width="48%">
-</p>
+<img src="./images/roc_curve.png" width="48%">
+
+<img src="./images/feature_importance.png" width="48%">
 
 <img src="./images/confusion_matrix.png" width="60%">
 
