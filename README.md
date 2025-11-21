@@ -31,7 +31,7 @@ credit-risk-modeling/
 │   └── 3.0-clusterizacao-clientes.ipynb   # Segmentação (K-Means)
 ├── requirements.txt     # Dependências do projeto
 └── README.md            # Documentação Executiva
-````
+```
 
 -----
 
@@ -53,22 +53,21 @@ A seleção de features foi fundamentada em hipóteses econômicas de **Solvênc
 
 O modelo (Random Forest balanceado) atingiu um **ROC AUC de 0.72** na base de teste.
 
-#### 1\. Drivers de Risco (Interpretação Econômica)
+#### 1. Drivers de Risco (Interpretação Econômica)
 
 O gráfico abaixo valida a tese do projeto: variáveis construídas com racional econômico superaram dados brutos.
 
-\<img src="./images/feature_importance.png" width="100%" alt="Gráfico de Importância das Variáveis mostrando Scores Externos como principal fator"/\>
+![Feature Importance](images/feature_importance.png)
 
   * **Insight:** `DAYS_EMPLOYED_PERCENT` (estabilidade no emprego) e scores externos (`EXT_SOURCE`) foram mais determinantes que a renda absoluta.
 
-#### 2\. Matriz de Confusão e Curva ROC
+#### 2. Matriz de Confusão e Curva ROC
 
 A Curva ROC demonstra a capacidade do modelo de separar "Bons" e "Maus" pagadores acima de uma escolha aleatória (linha tracejada). Na Matriz de Confusão, o foco foi equilibrar a detecção de fraudes sem barrar excessivamente bons clientes.
 
+![Curva ROC](images/roc_curve.png)
 
-\<img src="./images/roc_curve.png" width="100%" alt="Curva ROC" /\>
-
-\<img src="./images/confusion_matrix.png" width="100%" alt="Matriz de Confusão" /\>
+![Matriz de Confusão](images/confusion_matrix.png)
 
 -----
 
@@ -83,8 +82,7 @@ Utilizamos dados do **Banco Central do Brasil (SGS - Série 21082)** de 2011 a 2
 1.  **Sazonalidade (S):** Padrões anuais (ex: 13º salário reduzindo inadimplência em Dezembro).
 2.  **Tendência:** Movimentos de longo prazo do ciclo de crédito.
 
-\<img src="./images/sarima.png" width="100%" alt="Matriz de Confusão" /\>
-
+![SARIMA](images/sarima.png)
 
 ### 🚨 Resultados e Alerta de Risco (Próximos 6 Meses)
 
@@ -94,14 +92,14 @@ O modelo obteve um **MAPE (Erro Médio Absoluto)** de apenas **6.09%**. Abaixo, 
 | :--- | :---: | :---: | :--- |
 | **Out/2025** | 3.97% | ➡️ Estável | Manutenção de patamar. |
 | **Nov/2025** | 3.99% | ↗️ Leve Alta | Aquecimento de consumo pré-festas. |
-| **Dez/2025** | \<span style="color:green"\>**3.91%**\</span\> | ↘️ Queda | **Efeito 13º Salário:** Aumento momentâneo de liquidez reduz inadimplência. |
+| **Dez/2025** | <span style="color:green">**3.91%**</span> | ↘️ Queda | **Efeito 13º Salário:** Aumento momentâneo de liquidez reduz inadimplência. |
 | **Jan/2026** | **4.05%** | 🚀 Salto | **Efeito "Ressaca":** Acúmulo de dívidas de início de ano (IPVA/IPTU). |
 | **Fev/2026** | 4.12% | ↗️ Alta | Continuidade da deterioração de crédito. |
-| **Mar/2026** | \<span style="color:red"\>**4.15%**\</span\> | 🚩 **Pico** | **Alerta de Risco:** Rompimento do teto histórico recente. |
+| **Mar/2026** | <span style="color:red">**4.15%**</span> | 🚩 **Pico** | **Alerta de Risco:** Rompimento do teto histórico recente. |
 
 > **Interpretação:** O modelo capturou com precisão a "barriga" sazonal de dezembro (queda para 3.91%) seguida pelo choque de início de ano, projetando que a inadimplência fechará o primeiro trimestre de 2026 em **4.15%**.
 
-**Visualização do Forecast:**
+**Visualização do Forecast:**  
 A área sombreada em rosa representa o intervalo de confiança (95%). Note que mesmo no cenário otimista (limite inferior), a tendência é de não-redução para 2026.
 
 -----
@@ -119,22 +117,21 @@ Como não temos "rótulos" prévios, utilizamos o algoritmo K-Means.
 
 ### 🎯 Resultados dos Clusters
 
-\<img src="./images/KMEANS-1.png" width="100%" alt="Matriz de Confusão" /\>
+![K-Means 1](images/KMEANS-1.png)
 
-\<img src="./images/KMEANS-2.png" width="100%" alt="Matriz de Confusão" /\>
+![K-Means 2](images/KMEANS-2.png)
 
-
-**1. Escolha do K (Cotovelo):**
+**1. Escolha do K (Cotovelo):**  
 O gráfico abaixo mostra que o ganho de informação diminui após 3 ou 4 clusters.
 
-**2. Visualização dos Segmentos (PCA):**
+**2. Visualização dos Segmentos (PCA):**  
 Os clientes foram separados em grupos distintos (cores). O **Eixo X** explica a maior parte da variância (Gasto vs Limite).
 
 > **Aplicação de Negócio:**
 >
->   * **Cluster Roxo:** Clientes conservadores (Baixo Risco) -\> *Ação: Aumentar limite.*
->   * **Cluster Verde:** Usuários rotativos médios -\> *Ação: Manter monitoramento.*
->   * **Cluster Amarelo:** Alta volatilidade/Gastos extremos -\> *Ação: Bloqueio preventivo ou redução de limite.*
+>   * **Cluster Roxo:** Clientes conservadores (Baixo Risco) → *Ação: Aumentar limite.*
+>   * **Cluster Verde:** Usuários rotativos médios → *Ação: Manter monitoramento.*
+>   * **Cluster Amarelo:** Alta volatilidade/Gastos extremos → *Ação: Bloqueio preventivo ou redução de limite.*
 
 -----
 
@@ -147,7 +144,7 @@ Os clientes foram separados em grupos distintos (cores). O **Eixo X** explica a 
 
 ```bash
 # 1. Clone o repositório
-git clone [https://github.com/Valvitor/credit-risk-modeling.git](https://github.com/Valvitor/credit-risk-modeling.git)
+git clone https://github.com/Valvitor/credit-risk-modeling.git
 
 # 2. Instale as dependências
 pip install -r requirements.txt
@@ -161,8 +158,5 @@ pip install -r requirements.txt
 
 **Valvitor Santos** - Economista & Data Scientist
 
-  * [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
-  * [E-mail](mailto:valvitorscf@gmail.com)
-
-<!-- end list -->
-
+  * LinkedIn: https://www.linkedin.com/in/valvitor-santos/
+  * E-mail: valvitorscf@gmail.com
