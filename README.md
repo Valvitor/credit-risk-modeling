@@ -14,8 +14,10 @@ Em instituições financeiras, o maior desafio não é apenas conceder crédito,
 Neste projeto, utilizamos dados históricos do **Home Credit** para prever a classe `TARGET` (0: Bom Pagador, 1: Mau Pagador).
 
 ### 🎯 KPIs e Métricas de Sucesso
-Dada a natureza desbalanceada do dataset, a **Acurácia** é uma métrica enganosa. O foco deste projeto foi maximizar a **ROC AUC (Area Under the Curve)**.
-* **Por que AUC?** Ela mede a capacidade do modelo de *ordenar* os clientes. Um bom modelo de risco deve dar uma probabilidade de default mais alta para quem realmente vai atrasar, permitindo à mesa de crédito definir o ponto de corte (threshold) ideal baseada no apetite ao risco da instituição.
+Dada a natureza desbalanceada do dataset, a **Acurácia** é uma métrica enganosa (um modelo que aprova todo mundo teria 92% de acurácia, mas quebraria o banco).
+O foco deste projeto foi maximizar a **ROC AUC (Area Under the Curve)**.
+
+* **Por que AUC?** Ela mede a capacidade do modelo de *ordenar* os clientes por risco. Um bom modelo deve dar uma probabilidade de default mais alta para quem realmente vai atrasar, permitindo à mesa de crédito definir o ponto de corte (threshold) ideal baseada no apetite ao risco da instituição.
 
 ---
 
@@ -25,40 +27,40 @@ O modelo final, um **Random Forest Classifier** com balanceamento de classes, fo
 
 | Métrica | Resultado | Interpretação |
 | :--- | :--- | :--- |
-| **ROC AUC** | **0.7151** | Boa capacidade de discriminação entre bons e maus pagadores. |
+| **ROC AUC** | **0.7151** | Boa capacidade de discriminação entre bons e maus pagadores (Baseline sólida). |
 | **Dataset** | Desbalanceado | Tratado via parâmetro `class_weight='balanced'`. |
 
 ### 1. Curva ROC
-A curva demonstra que o modelo é superior a uma escolha aleatória (linha pontilhada).
-![Curva ROC](./notebooks/outputs/roc_curve.png)
+A curva demonstra que o modelo é significativamente superior a uma escolha aleatória (linha pontilhada), capturando sinal nos dados.
+![Curva ROC](images/roc_curve.png)
 
 ### 2. Importância das Variáveis (Feature Importance)
-O que define um cliente de risco? Segundo o modelo, dados externos (Bureau de crédito) e a idade são cruciais.
-![Feature Importance](./notebooks/outputs/feature_importance.png)
+O que define um cliente de risco? Segundo o modelo, dados externos (Bureau de crédito) e a idade são cruciais, seguidos pelas variáveis de engenharia criadas.
+![Feature Importance](images/feature_importance.png)
 
 ### 3. Matriz de Confusão
-![Matriz de Confusão](./notebooks/outputs/confusion_matrix.png)
+![Matriz de Confusão](images/confusion_matrix.png)
 
 ---
 
 ## 🧠 Metodologia e Engenharia de Atributos
 
-Como economista, a abordagem não foi apenas "jogar dados no modelo". Houve um processo de construção de hipóteses econômicas transformadas em variáveis (Feature Engineering).
+Como economista, a abordagem não foi apenas estatística. Houve um processo de construção de hipóteses econômicas transformadas em variáveis (**Feature Engineering**).
 
 ### Variáveis Criadas (Domain Knowledge)
 Foram derivadas novas métricas para capturar a saúde financeira real do cliente:
 
 1.  **Comprometimento de Renda (`CREDIT_INCOME_PERCENT`):**
     $$\frac{\text{Valor do Crédito}}{\text{Renda Anual}}$$
-    *Hipotése:* Clientes pedindo empréstimos muitas vezes superiores à sua renda anual apresentam maior risco.
+    *Hipótese:* Clientes pedindo empréstimos muitas vezes superiores à sua renda anual apresentam maior alavancagem e risco.
 
 2.  **Peso da Parcela (`ANNUITY_INCOME_PERCENT`):**
     $$\frac{\text{Valor da Parcela (Anuidade)}}{\text{Renda Anual}}$$
-    *Hipotése:* Quanto maior a parcela em relação ao salário, maior a probabilidade de default.
+    *Hipótese:* Quanto maior a parcela em relação ao salário (fluxo de caixa), maior a sensibilidade a choques financeiros.
 
 3.  **Estabilidade Profissional (`DAYS_EMPLOYED_PERCENT`):**
     $$\frac{\text{Dias Empregado}}{\text{Idade do Cliente}}$$
-    *Hipotése:* Clientes com maior tempo de emprego relativo à idade tendem a ser mais estáveis.
+    *Hipótese:* Clientes com maior tempo de emprego relativo à idade (Ciclo de Vida) tendem a apresentar menor volatilidade de renda.
 
 ---
 
@@ -69,10 +71,10 @@ O projeto segue um pipeline linear de Data Science:
 1.  **Coleta de Dados:** Leitura de arquivos CSV (Pandas).
 2.  **Limpeza (Preprocessing):**
     * Remoção de colunas irrelevantes (IDs).
-    * Imputação de valores nulos utilizando a **Mediana** (para evitar distorção por outliers de renda).
+    * Imputação de valores nulos utilizando a **Mediana** (para evitar distorção por outliers).
 3.  **Modelagem:**
     * Uso de `RandomForestClassifier`.
-    * Configuração `class_weight='balanced'` para penalizar erros na classe minoritária (inadimplentes).
+    * Configuração `class_weight='balanced'` para penalizar erros na classe minoritária.
 4.  **Avaliação:** Scikit-learn metrics (AUC, Confusion Matrix).
 
 ```python
@@ -107,7 +109,17 @@ model.fit(X_train, y_train)
 
       * Navegue até a pasta `notebooks/`.
       * Certifique-se de que o arquivo `application_train.csv` está na pasta `data/`.
-      * Execute todas as células para gerar o treinamento e os gráficos na pasta `outputs/`.
+      * Execute todas as células para gerar o treinamento.
+
+-----
+
+## 🔮 Próximos Passos (Melhorias Futuras)
+
+Para evoluir este MVP para um modelo produtivo, os próximos passos mapeados são:
+
+  * [ ] **Testar Boosting:** Implementar XGBoost ou LightGBM, que tendem a ter melhor performance em dados tabulares.
+  * [ ] **Otimização de Hiperparâmetros:** Utilizar Bayesian Search para refinar a Random Forest.
+  * [ ] **Deploy:** Criar uma API com FastAPI para servir o modelo em tempo real.
 
 -----
 
@@ -116,10 +128,5 @@ model.fit(X_train, y_train)
 **Valvitor Santos**
 
   * 💼 [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
-  * 📧 [Email](valvitorscf@gmail.com)
-  * 🐱 [GitHub](https://github.com/Valvitor)
+  * 📧 [Email](mailto:valvitorscf@gmail.com)
 
------
-
-```
-```
