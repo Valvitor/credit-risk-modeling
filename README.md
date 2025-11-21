@@ -1,3 +1,4 @@
+````markdown
 # 📊 Credit Risk Ecosystem: Do Micro ao Macro
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
@@ -5,9 +6,10 @@
 ![Domain](https://img.shields.io/badge/Domain-Finanças_Quantitativas-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-> **Business Challenge:** O gerenciamento de risco de crédito exige uma abordagem holística. Este repositório consolida soluções para duas frentes críticas:
-> 1.  **Micro:** Mitigação de Seleção Adversa na concessão individual (**Credit Scoring**).
-> 2.  **Macro:** Calibragem de Risco Sistêmico e Provisões (**Forecasting de Inadimplência**).
+> **Business Challenge:** O gerenciamento de risco de crédito exige uma abordagem holística. Este repositório consolida soluções para três frentes críticas da gestão bancária:
+> 1.  **Micro (Concessão):** Mitigação de Seleção Adversa na ponta (**Credit Scoring**).
+> 2.  **Estratégico (Gestão):** Segmentação de Portfólio e Perfis (**K-Means Clustering**).
+> 3.  **Macro (Prevenção):** Calibragem de Risco Sistêmico e Provisões (**Forecasting SARIMA**).
 
 ---
 
@@ -15,17 +17,19 @@
 
 | Módulo | Foco | Técnica | Target (Alvo) |
 | :--- | :--- | :--- | :--- |
-| **1. Credit Scoring** | **Micro** (Cliente) | Random Forest | Probabilidade de Default Individual |
-| **2. Macro Forecast** | **Macro** (Mercado) | SARIMA | Taxa de Inadimplência do Sistema (Séries Temporais) |
+| **1. Credit Scoring** | **Risco Individual** | Random Forest (Supervised) | Probabilidade de Default ($P(D)$) |
+| **2. Forecast Macro** | **Risco Sistêmico** | SARIMA (Time Series) | Taxa de Inadimplência Brasil (BACEN) |
+| **3. Segmentação** | **Estratégia de CRM** | K-Means + PCA (Unsupervised) | Grupos de Comportamento (Clusters) |
 
 ### 🌳 Organização de Arquivos
 ```text
 credit-risk-modeling/
 ├── data/                # Dados brutos (Home Credit & BACEN via API)
-├── images/              # Resultados gráficos e visuais
+├── images/              # Resultados gráficos (PNGs)
 ├── notebooks/           # Jupyter Notebooks
-│   ├── 1.0-mvp-modelagem-credito.ipynb    # Projeto 1 (Scoring)
-│   └── 2.0-forecast-inadimplencia.ipynb   # Projeto 2 (Séries Temporais)
+│   ├── 1.0-mvp-modelagem-credito.ipynb    # Scoring (Classificação)
+│   ├── 2.0-forecast-inadimplencia.ipynb   # Forecast (Séries Temporais)
+│   └── 3.0-clusterizacao-clientes.ipynb   # Segmentação (K-Means)
 ├── requirements.txt     # Dependências do projeto
 └── README.md            # Documentação Executiva
 ````
@@ -34,67 +38,104 @@ credit-risk-modeling/
 
 # 🏢 Projeto 1: Credit Scoring (Micro)
 
-**Objetivo:** Desenvolver um classificador capaz de ordenar proponentes por risco, maximizando o retorno ajustado ao risco (RAROC) e reduzindo a assimetria de informação.
+**Objetivo:** Desenvolver um classificador (Behavior Score) capaz de ordenar proponentes por risco, maximizando o retorno ajustado ao risco (RAROC) e reduzindo a assimetria de informação.
 
-### 🧠 Engenharia de Atributos (Economic Feature Engineering)
+### 🧠 Teoria e Engenharia de Atributos
 
-Diferencial do projeto: A seleção de features não foi puramente estatística, mas fundamentada em hipóteses econômicas de **Solvência** e **Liquidez**.
+A seleção de features foi fundamentada em hipóteses econômicas de **Solvência** e **Liquidez**, não apenas em correlação estatística.
 
 | Variável Derivada | Fórmula (Proxy) | Hipótese Econômica |
 | :--- | :--- | :--- |
-| **Alavancagem** | $$\text{DTI} \approx \frac{\text{Valor do Crédito}}{\text{Renda Anual}}$$ | Clientes alavancados muito acima de sua geração de caixa anual apresentam risco exponencial de insolvência. |
-| **Esforço Mensal** | $$\text{Liquidez} = \frac{\text{Valor da Parcela}}{\text{Renda Anual}}$$ | Mede a pressão no fluxo de caixa. Parcelas que consomem grande fatia da renda aumentam a sensibilidade a choques exógenos. |
+| **Alavancagem** | $$\text{DTI} \approx \frac{\text{Valor do Crédito}}{\text{Renda Anual}}$$ | Clientes alavancados acima da geração de caixa anual apresentam risco exponencial (Insolvência). |
+| **Esforço Mensal** | $$\text{Liquidez} = \frac{\text{Valor da Parcela}}{\text{Renda Anual}}$$ | Mede a pressão no fluxo de caixa (Liquidez). Parcelas altas aumentam a sensibilidade a choques exógenos. |
 | **Ciclo de Vida** | $$\text{Estabilidade} = \frac{\text{Tempo Emprego}}{\text{Idade}}$$ | Baseado na *Life-cycle hypothesis*: estabilidade profissional relativa à idade indica menor volatilidade de renda futura. |
 
-### 📈 Resultados (MVP)
+### 📈 Resultados Obtidos
 
-O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na base de teste (Holdout 30%).
+O modelo (Random Forest balanceado) atingiu um **ROC AUC de 0.72** na base de teste.
 
-#### Capacidade de Discriminação e Drivers de Risco
+#### 1\. Drivers de Risco (Interpretação Econômica)
 
-<img src="./images/roc_curve.png" width="100%">
+O gráfico abaixo valida a tese do projeto: variáveis construídas com racional econômico superaram dados brutos.
 
-<img src="./images/feature_importance.png" width="100%">
+\<img src="./images/feature_importance.png" width="100%" /\>
+
+  * **Insight:** `DAYS_EMPLOYED_PERCENT` (estabilidade no emprego) e scores externos (`EXT_SOURCE`) foram mais determinantes que a renda absoluta.
+
+#### 2\. Matriz de Confusão e Curva ROC
+
+A Curva ROC demonstra a capacidade do modelo de separar "Bons" e "Maus" pagadores acima de uma escolha aleatória (linha tracejada). Na Matriz de Confusão, o foco foi equilibrar a detecção de fraudes sem barrar excessivamente bons clientes.
 
 
-**Insight de Negócio:** O gráfico de *Feature Importance* (direita) valida a hipótese econômica: a variável criada **`DAYS_EMPLOYED_PERCENT`** (Estabilidade) provou-se um dos maiores preditores de adimplência, superando variáveis brutas de renda.
+\<img src="./images/roc_curve.png" width="100%" /\>
+\<img src="./images/confusion_matrix.png" width="100%" /\>
 
-#### Matriz de Confusão (Threshold 0.5)
 
-<img src="./images/confusion_matrix.png" width="100%">
-
-> *Código Fonte:* [`notebooks/1.0-mvp-modelagem-credito.ipynb`](notebooks/1.0-mvp-modelagem-credito.ipynb)
 
 -----
 
 # 📈 Projeto 2: Forecast de Inadimplência (Macro)
 
-**Objetivo:** Prever a tendência da taxa de inadimplência (Pessoa Física) para calibrar a **Provisão para Devedores Duvidosos (PDD)** e realizar cenários de estresse (Basel III).
+**Objetivo:** Prever a tendência da taxa de inadimplência (PF) para calibrar a **Provisão para Devedores Duvidosos (PDD)** e realizar testes de estresse (Basel III).
 
-### 📊 Dados e Modelagem
+### 📊 Metodologia (SARIMA)
 
-  * **Fonte:** Dados oficiais do **Banco Central do Brasil (SGS)** extraídos via API em tempo real (Série 21082).
-  * **Período:** Ciclo de crédito completo (2011 - 2024).
-  * **Modelo:** **SARIMA** (Seasonal AutoRegressive Integrated Moving Average).
-  * **Racional:** O modelo captura explicitamente a tendência de longo prazo e os ciclos sazonais de endividamento das famílias brasileiras (ex: aumento de inadimplência pós-final de ano).
+Utilizamos dados do **Banco Central do Brasil (SGS - Série 21082)** de 2011 a 2024. O modelo escolhido foi o **SARIMA** para capturar:
 
-### 🚨 Resultados e Alerta de Risco
+1.  **Sazonalidade (S):** Padrões anuais (ex: 13º salário reduzindo inadimplência em Dezembro).
+2.  **Tendência:** Movimentos de longo prazo do ciclo de crédito.
 
-O modelo obteve um erro médio absoluto (**MAPE**) de apenas **6.09%**, excelente para dados macroeconômicos voláteis.
+### 🚨 Resultados e Alerta de Risco (Próximos 6 Meses)
 
-**Cenário Base (Projeção 2025-2026):**
-O modelo aponta uma **tendência clara de alta** na inadimplência, projetando o rompimento do patamar de **4.15%** no início de 2026.
+O modelo obteve um **MAPE (Erro Médio Absoluto)** de apenas **6.09%**. Abaixo, o detalhamento mês a mês da projeção de inadimplência:
 
-  * **Recomendação Estratégica:** A tesouraria deve considerar o fortalecimento do colchão de liquidez (PDD) e revisão de políticas de concessão para faixas de rating de maior risco (D-H) para 2026.
+| Data de Referência | Taxa Prevista (%) | Tendência | Contexto Econômico (Sazonalidade) |
+| :--- | :---: | :---: | :--- |
+| **Out/2025** | 3.97% | ➡️ Estável | Manutenção de patamar. |
+| **Nov/2025** | 3.99% | ↗️ Leve Alta | Aquecimento de consumo pré-festas. |
+| **Dez/2025** | \<span style="color:green"\>**3.91%**\</span\> | ↘️ Queda | **Efeito 13º Salário:** Aumento momentâneo de liquidez reduz inadimplência. |
+| **Jan/2026** | **4.05%** | 🚀 Salto | **Efeito "Ressaca":** Acúmulo de dívidas de início de ano (IPVA/IPTU). |
+| **Fev/2026** | 4.12% | ↗️ Alta | Continuidade da deterioração de crédito. |
+| **Mar/2026** | \<span style="color:red"\>**4.15%**\</span\> | 🚩 **Pico** | **Alerta de Risco:** Rompimento do teto histórico recente. |
 
-> *Código Fonte:* [`notebooks/2.0-forecast-inadimplencia.ipynb`](notebooks/2.0-forecast-inadimplencia.ipynb)
+> **Interpretação:** O modelo capturou com precisão a "barriga" sazonal de dezembro (queda para 3.91%) seguida pelo choque de início de ano, projetando que a inadimplência fechará o primeiro trimestre de 2026 em **4.15%**.
+
+**Visualização do Forecast:**
+A área sombreada em rosa representa o intervalo de confiança (95%). Note que mesmo no cenário otimista (limite inferior), a tendência é de não-redução para 2026.
+
+-----
+
+# 👥 Projeto 3: Segmentação de Clientes (Clustering)
+
+**Objetivo:** Identificar grupos homogêneos de clientes para estratégias diferenciadas de limite de crédito e cobrança, utilizando aprendizagem não supervisionada.
+
+### 🧬 Metodologia (K-Means + PCA)
+
+Como não temos "rótulos" prévios, utilizamos o algoritmo K-Means.
+
+1.  **Definição do K (Elbow Method & Silhouette):** Testamos de 2 a 9 clusters. O ponto ótimo foi escolhido observando onde a inércia (erro) para de cair drasticamente.
+2.  **PCA (Principal Component Analysis):** Reduzimos as variáveis em 2 componentes para visualização.
+
+### 🎯 Resultados dos Clusters
+
+**1. Escolha do K (Cotovelo):**
+O gráfico abaixo mostra que o ganho de informação diminui após 3 ou 4 clusters.
+
+**2. Visualização dos Segmentos (PCA):**
+Os clientes foram separados em grupos distintos (cores). O **Eixo X** explica a maior parte da variância (Gasto vs Limite).
+
+> **Aplicação de Negócio:**
+>
+>   * **Cluster Roxo:** Clientes conservadores (Baixo Risco) -\> *Ação: Aumentar limite.*
+>   * **Cluster Verde:** Usuários rotativos médios -\> *Ação: Manter monitoramento.*
+>   * **Cluster Amarelo:** Alta volatilidade/Gastos extremos -\> *Ação: Bloqueio preventivo ou redução de limite.*
 
 -----
 
 ## 🛠️ Tech Stack & Reproducibilidade
 
   * **Linguagem:** Python 3.12
-  * **Bibliotecas:** Pandas, NumPy, Scikit-Learn, Statsmodels, Seaborn.
+  * **Bibliotecas:** Scikit-learn, Statsmodels, Pandas, NumPy, Seaborn, Matplotlib.
 
 ### Como rodar o projeto:
 
@@ -105,20 +146,8 @@ git clone [https://github.com/Valvitor/credit-risk-modeling.git](https://github.
 # 2. Instale as dependências
 pip install -r requirements.txt
 
-# 3. Execute os Notebooks (A ordem não interfere)
-# notebooks/1.0-mvp-modelagem-credito.ipynb
-# notebooks/2.0-forecast-inadimplencia.ipynb
+# 3. Execute os Notebooks na ordem desejada dentro da pasta /notebooks
 ```
-
------
-
-## 🔮 Roadmap (Próximos Passos)
-
-Para evoluir estes MVPs para modelos produtivos de nível bancário:
-
-  * [ ] **Modelagem Avançada:** Testar Gradient Boosting (XGBoost/LightGBM) para o Score de Crédito.
-  * [ ] **Explicabilidade (XAI):** Implementar **SHAP Values** para justificar decisões individuais (Compliance regulatório).
-  * [ ] **Deploy:** Criar uma API com FastAPI para servir o modelo de Score em tempo real.
 
 -----
 
@@ -128,3 +157,8 @@ Para evoluir estes MVPs para modelos produtivos de nível bancário:
 
   * [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
   * [E-mail](mailto:valvitorscf@gmail.com)
+
+<!-- end list -->
+
+```
+```
