@@ -1,3 +1,5 @@
+````markdown
+
 # 📊 Credit Risk Ecosystem: Do Micro ao Macro
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
@@ -156,3 +158,7 @@ pip install -r requirements.txt
 
   * [LinkedIn](https://www.linkedin.com/in/valvitor-santos/)
   * [E-mail](mailto:valvitorscf@gmail.com)
+
+<!-- end list -->
+
+```
