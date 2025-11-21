@@ -63,7 +63,7 @@ O modelo (Random Forest com balanceamento) atingiu um **ROC AUC de 0.7151** na b
 
 <img src="./images/confusion_matrix.png" width="100%">
 
-> *Código Fonte:* [`notebooks/1.0-mvp-modelagem-credito.ipynb`](https://www.google.com/search?q=notebooks/1.0-mvp-modelagem-credito.ipynb)
+> *Código Fonte:* [`notebooks/1.0-mvp-modelagem-credito.ipynb`](.notebooks/1.0-mvp-modelagem-credito.ipynb)
 
 -----
 
@@ -87,7 +87,7 @@ O modelo aponta uma **tendência clara de alta** na inadimplência, projetando o
 
   * **Recomendação Estratégica:** A tesouraria deve considerar o fortalecimento do colchão de liquidez (PDD) e revisão de políticas de concessão para faixas de rating de maior risco (D-H) para 2026.
 
-> *Código Fonte:* [`notebooks/2.0-forecast-inadimplencia.ipynb`](https://www.google.com/search?q=notebooks/2.0-forecast-inadimplencia.ipynb)
+> *Código Fonte:* [`notebooks/2.0-forecast-inadimplencia.ipynb`](.notebooks/2.0-forecast-inadimplencia.ipynb)
 
 -----
 
