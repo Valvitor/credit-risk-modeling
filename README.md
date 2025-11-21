@@ -34,10 +34,10 @@ A curva demonstra que o modelo é superior a uma escolha aleatória (linha ponti
 
 ### 2. Importância das Variáveis (Feature Importance)
 O que define um cliente de risco? Segundo o modelo, dados externos (Bureau de crédito) e a idade são cruciais.
-![Feature Importance](./outputs/feature_importance.png)
+![Feature Importance](./notebooks/outputs/feature_importance.png)
 
 ### 3. Matriz de Confusão
-![Matriz de Confusão](./notebooks/outputs/feature_importance.png)
+![Matriz de Confusão](./notebooks/outputs/confusion_matrix.png)
 
 ---
 
