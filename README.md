@@ -82,7 +82,10 @@ Utilizamos dados do **Banco Central do Brasil (SGS - Série 21082)** de 2011 a 2
 1.  **Sazonalidade (S):** Padrões anuais (ex: 13º salário reduzindo inadimplência em Dezembro).
 2.  **Tendência:** Movimentos de longo prazo do ciclo de crédito.
 
+**Visualização do Forecast:**  
+A área sombreada em rosa representa o intervalo de confiança (95%). Note que mesmo no cenário otimista (limite inferior), a tendência é de não-redução para 2026.
 
+![SARIMA](images/sarima.png)
 
 ### 🚨 Resultados e Alerta de Risco (Próximos 6 Meses)
 
@@ -99,10 +102,7 @@ O modelo obteve um **MAPE (Erro Médio Absoluto)** de apenas **6.09%**. Abaixo, 
 
 > **Interpretação:** O modelo capturou com precisão a "barriga" sazonal de dezembro (queda para 3.91%) seguida pelo choque de início de ano, projetando que a inadimplência fechará o primeiro trimestre de 2026 em **4.15%**.
 
-**Visualização do Forecast:**  
-A área sombreada em rosa representa o intervalo de confiança (95%). Note que mesmo no cenário otimista (limite inferior), a tendência é de não-redução para 2026.
 
-![SARIMA](images/sarima.png)
 
 -----
 
